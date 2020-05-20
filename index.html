@@ -7,12 +7,36 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
   </head>
   <body>
-    <h1>Hello World!</h1>
+    <!--<h1>Hello World!</h1>
     We are using node <script>document.write(process.versions.node)</script>,
     Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    and Electron <script>document.write(process.versions.electron)</script>.-->
+
+    <input id="select-server" type="text" placeholder="Select server" value="http://127.0.0.1:4001">
+    <input id="select-room" type="text" placeholder="Select room" value="Kamer">
+    <button onClick="connectToSocket();">Connect to this socket.io server</button>
+
+    <script src="vendor/socket.io.js"></script>
+
 
     <script>
+    var socket;
+    function connectToSocket() {
+      let serverAddress = document.getElementById('select-server').value;
+      let room = document.getElementById('select-room').value;
+
+      socket = io(serverAddress);
+      socket.on('connect', () => {
+        //console.log('connected to Socket.io on ' + serverAddress);
+        socket.emit('roomRequest', room + '-data');
+      });
+
+      socket.on('message', (msg) => {
+        console.log(msg);
+      });
+    }
+
+
       const { Server } = require('node-osc'); // The OSC server for receiving eSense data
       const host = '127.0.0.1';
       const oscPort = 4559;
@@ -22,6 +46,7 @@
       oscServer.on('message', function (msg) {
         if (msg[0] != '/time') {
           console.log(msg);
+          socket.emit('eSenseData', msg[1]);
         }
       });
     </script>
