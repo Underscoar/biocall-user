@@ -11,5 +11,19 @@
     We are using node <script>document.write(process.versions.node)</script>,
     Chrome <script>document.write(process.versions.chrome)</script>,
     and Electron <script>document.write(process.versions.electron)</script>.
+
+    <script>
+      const { Server } = require('node-osc'); // The OSC server for receiving eSense data
+      const host = '127.0.0.1';
+      const oscPort = 4559;
+
+      var oscServer = new Server(oscPort, host);
+      console.log('Listening for OSC data on port ' + oscPort);
+      oscServer.on('message', function (msg) {
+        if (msg[0] != '/time') {
+          console.log(msg);
+        }
+      });
+    </script>
   </body>
 </html>
