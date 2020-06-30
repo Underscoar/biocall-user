@@ -1,0 +1,174 @@
+body, html {
+  padding: 0;
+  margin: 0;
+  min-width: 400px;
+  min-height: 300px;
+  font-family: 'Segoe UI', 'Helvetica', 'Roboto', 'Open Sans';
+  background: #FAFAFA;
+}
+
+.container {
+  padding: 50px;
+  margin: auto;
+  max-width: 800px;
+}
+
+h1 {
+  margin: 0;
+  border-left: 4px solid #6979F8;
+  box-sizing: border-box;
+  padding-left: 10px;
+  color: #6979F8;
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+#connect-status {
+  box-sizing: border-box;
+  line-height: 40px;
+  border-bottom: 1px solid #ECE9F1;
+  margin-bottom: 20px;
+}
+
+#connect-status span {
+  font-weight: bold;
+}
+
+.dual-input {
+  display: inline-block;
+  width: calc(100% - 250px);
+  min-width: 300px;
+}
+
+.dual-input input {
+  width: 200px;
+  border: none;
+  outline: none;
+  height: 40px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgba(236,233,241,1);
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+
+.connection-btn {
+  background: #6979F8;
+  color: #fff;
+  height: 40px;
+  border: none;
+  padding: 0 20px;
+  border-radius: 5px;
+  width: 200px;
+  box-shadow: 0px 0px 10px 0px rgba(236,233,241,1);
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: 0.3s;
+}
+
+.connection-btn:focus {
+  outline: none;
+}
+
+.connection-btn:hover {
+  background: #8a98ff;
+}
+
+.connect-to-disconnect {
+  background: none;
+  color: #6979F8;
+  border: 2px solid #6979F8;
+}
+
+.connect-to-disconnect:hover {
+  background: #dfe3ff;
+}
+
+.socket-connect-wrap {
+  border-bottom: 1px solid #ECE9F1;
+  box-sizing: border-box;
+}
+
+.datasource {
+  box-sizing: border-box;
+  padding: 20px 0;
+  border-bottom: 1px solid #ECE9F1;
+}
+
+.datasource h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.gsr-title-wrap {
+  display: inline-block;
+  width: calc(100% - 250px);
+  min-width: 300px;
+}
+
+.gsr-title-wrap span {
+  font-weight: bold;
+}
+
+.gsr-value-box {
+  display: inline-block;
+  width: 200px;
+  height: 100%;
+  background: #6979F8;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgba(236,233,241,1);
+  padding: 10px 0;
+}
+
+.gsr-value-title {
+  font-size: 12px;
+  font-weight: lighter;
+}
+
+.gsr-value {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.facereader-title-wrap {
+  display: inline-block;
+  width: calc(100% - 250px);
+  min-width: 300px;
+}
+
+.facereader-status {
+  margin-bottom: 40px;
+}
+
+.start-subservice-btn {
+  background: #6979F8;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  width: 200px;
+  box-shadow: 0px 0px 10px 0px rgba(236,233,241,1);
+  cursor: pointer;
+  transition: 0.3s;
+  display: inline-block;
+  position: relative;
+  top: -20px;
+}
+
+.start-subservice-btn:disabled {
+  background: none;
+  color: #6979F8;
+  border: 2px solid #6979F8;
+  cursor: default;
+}
+
+.start-subservice-btn:disabled:hover {
+  background: none;
+}
+
+.start-subservice-btn:hover {
+  background: #8a98ff;
+}

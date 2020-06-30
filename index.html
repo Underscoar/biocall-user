@@ -3,224 +3,43 @@
   <head>
     <meta charset="UTF-8">
     <title>BioCall User</title>
-    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <style>
-      body, html {
-        padding: 0;
-        margin: 0;
-        min-width: 400px;
-        min-height: 300px;
-        font-family: 'Segoe UI', 'Helvetica';
-      }
-
-      .container {
-        margin: auto;
-        width: 415px;
-      }
-
-      h1, #connect-status {
-        text-align: center;
-        margin: 20px 0 0 0;
-      }
-
-      #connect-status {
-        display: block;
-        margin: 0 0 50px 0;
-      }
-
-      .dual-input {
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .dual-input input {
-        width: 195px;
-      }
-
-      .connection-btn  {
-        display: block;
-        width: 100%;
-        height: 30px;
-        margin: 5px auto;
-      }
-
-      .disconnect-btn {
-        margin-top: 50px;
-      }
-
-      .datasource-wrap {
-        display: flex;
-        margin-top: 20px;
-      }
-
-      .datasource {
-        flex-grow: 1;
-        max-width: 50%;
-        box-sizing: border-box;
-        padding: 5px;
-      }
-
-      h2 {
-        font-size: 16px;
-        text-align: center;
-        margin: 0 auto;
-      }
-
-      .datasource p {
-        font-size: 12px;
-        margin: 10px auto;
-      }
-
-      .start-subservice-btn {
-        display: block;
-        margin: 10px auto;
-      }
-    </style>
+    <link rel="icon" href="icon_med.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="newstyles.css">
   </head>
   <body>
-    <!--<h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.-->
     <div class="container">
       <h1>Connect to BioCall</h1>
-      <span id="connect-status">Currently not connected to server</span>
-      <div class="dual-input">
-        <input id="select-server" type="text" placeholder="Server to connect to" value="http://127.0.0.1:4001">
-        <input id="select-room" type="text" placeholder="Room to join" value="Kamer">
+      <div id="connect-status">Currently not connected to server</div>
+      <div class="socket-connect-wrap">
+        <div class="dual-input">
+          <input id="select-server" type="text" placeholder="Server to connect to" value="http://127.0.0.1:4001">
+          <input id="select-room" type="text" placeholder="Room to join" value="BioCallTest">
+        </div>
+        <button id="connect-socket" class="connection-btn" onClick="connectToSocket();">Connect</button>
       </div>
-      <button id="connect-socket" class="connection-btn" onClick="connectToSocket();">Connect to this socket.io server</button>
 
       <div class="datasource-wrap">
         <div class="datasource">
-          <h2>eSense GSR</h2>
-          <p>Listening for OSC data on port 4559</p>
-        </div>
-        <div class="datasource">
-          <h2>Facereader</h2>
+          <div class="facereader-title-wrap">
+            <h2>Facereader</h2>
+            <p id="facereader-status" class="facereader-status">Facereader status: Not connected</p>
+          </div>
           <button id="start-facereader" onClick="connectToFaceReader(0);" class="start-subservice-btn">Connect to FacereaderClient on port 8052</button>
-          <p id="facereader-status">Facereader status: Not connected</p>
+        </div>
+        <div class="datasource gsr-datasource">
+          <div class="gsr-title-wrap">
+            <h2>eSense "/GSR"</h2>
+            <p>Listening for OSC data on port <span>4559</span></p>
+          </div>
+          <div class="gsr-value-box">
+            <div class="gsr-value-title">Latest GSR value:</div>
+            <div id="gsr-value" class="gsr-value">-</div>
+          </div>
         </div>
       </div>
-
-      <button id="disconnect-btn" class="connection-btn disconnect-btn" onClick="disconnectFromSocket();" disabled>Disconnect from room</button>
     </div>
     <script src="vendor/socket.io.js"></script>
-
-
-    <script>
-    const { Server } = require('node-osc'); // The OSC server for receiving eSense data
-    const net = require('net'); // The net server for receiving Facereader data
-
-    const host = '127.0.0.1';
-    const oscPort = 4559;
-    const faceReaderPort = 8052;
-
-
-    var socket;
-    function connectToSocket() {
-      let serverAddress = document.getElementById('select-server').value;
-      let room = document.getElementById('select-room').value;
-
-      socket = io(serverAddress, {
-        reconnection: false
-      });
-      socket.on('connect', () => {
-        //console.log('connected to Socket.io on ' + serverAddress);
-        socket.emit('roomRequest', room + '-data');
-
-        document.getElementById('select-server').disabled=true;
-        document.getElementById('select-room').disabled=true;
-        document.getElementById('connect-socket').disabled=true;
-
-        document.getElementById('connect-status').innerHTML='Currently not connected to server';
-
-        document.getElementById('disconnect-btn').disabled=false;
-      });
-
-      socket.on('message', (msg) => {
-        console.log(msg);
-      });
-
-      socket.on('disconnect', () => {
-        document.getElementById('select-server').disabled=false;
-        document.getElementById('select-room').disabled=false;
-        document.getElementById('connect-socket').disabled=false;
-
-        document.getElementById('connect-status').innerHTML='Connected to room "' + room + '" on ' + serverAddress;
-
-        document.getElementById('disconnect-btn').disabled=false;
-      });
-    }
-
-    function disconnectFromSocket() {
-      socket.close();
-
-      document.getElementById('select-server').disabled=false;
-      document.getElementById('select-room').disabled=false;
-      document.getElementById('connect-socket').disabled=false;
-
-      document.getElementById('connect-status').innerHTML='Currently not connected to server';
-
-      document.getElementById('disconnect-btn').disabled=true;
-    }
-
-
-
-
-
-      var oscServer = new Server(oscPort, host);
-      console.log('Listening for OSC data on port ' + oscPort);
-      oscServer.on('message', function (msg) {
-        if (msg[0] != '/time') {
-          console.log(msg);
-          socket.emit('eSenseData', msg[1]);
-        }
-      });
-
-
-      var faceReaderClient = null;
-      var faceReaderIndex = 0;
-
-      function connectToFaceReader(x) {
-        if (faceReaderClient != null) {
-          faceReaderClient.destroy();
-          faceReaderClient = null;
-        }
-        document.getElementById('facereader-status').innerHTML="Facereader status: Connecting";
-        document.getElementById('start-facereader').disabled=true;
-        faceReaderClient = new net.Socket();
-        faceReaderClient.connect(faceReaderPort, host, function() {
-          console.log('Connection to FaceReader client opened successfully! Listening for FaceReader data on port ' + faceReaderPort);
-          document.getElementById('facereader-status').innerHTML="Facereader status: Connected!";
-        });
-
-        faceReaderClient.on('error', function(err) {
-          faceReaderClient.destroy();
-          faceReaderClient = null;
-          console.log("ERROR: Connection could not be openend/reset. Msg: %s", err.message + ' -> trying again');
-          let triedAmount=x+1;
-          if (triedAmount < 5) {
-            setTimeout(connectToFaceReader, 500, triedAmount);
-          }
-          else {
-            document.getElementById('facereader-status').innerHTML="Facereader status: Could not connect";
-            document.getElementById('start-facereader').disabled=false;
-          }
-        });
-
-        faceReaderClient.on('data', function(data) {
-          console.log("Received: %s", data);
-          faceReaderIndex++;
-          if (faceReaderIndex == 5) {
-            socket.emit('faceReaderData', JSON.parse(data));
-            faceReaderIndex=0;
-          }
-
-        });
-      }
-
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>
