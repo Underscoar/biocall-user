@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron')
 
+
 function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -10,6 +11,8 @@ function createWindow () {
     },
     icon: 'icon_med.png'
   })
+
+  win.setMenuBarVisibility(false);
 
   // and load the index.html of the app.
   win.loadFile('index.html')
@@ -36,6 +39,7 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
