@@ -15,7 +15,6 @@ function connectToSocket() {
     reconnection: false
   });
   socket.on('connect', () => {
-    //console.log('connected to Socket.io on ' + serverAddress);
     socket.emit('roomRequest', room + '-data');
 
     document.getElementById('select-server').disabled=true;
