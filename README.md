@@ -5,7 +5,7 @@
 BioCall-User is een element van het grotere BioCall geheel. Een applicatie waarin biofeedback getoond wordt tijdens een videogesprek. Het bestaat uit drie onderdelen:
 - BioCall: Frontend (React) applicatie
 - BioCall-Server: NodeJS server die realtime biofeedback naar de frontend stuurt
-**- BioCall-User: Electron applicatie die realtime de biofeedback van eSense en Facereader naar de NodeJS server stuurt**
+- **BioCall-User: Electron applicatie die realtime de biofeedback van eSense en Facereader naar de NodeJS server stuurt**
 
 ## Installation
 ### Clone
@@ -27,6 +27,21 @@ npm start
 ## Use
 Als BioCall-Server draait/online staat, verbind dan met de Socket.IO server. Open FacereaderClient en klik dan op `Connect to FacereaderClient`.
 
+### Facereader
+Facereader versie: 8.0.
+
+In Facereader instellingen, stel Analysis options in. Stel hierbij ten minste de volgende opties bij Optional Classifications:
+- Action Units
+- Facial states
+- Estimate heart rate and heart rate variability
+
+In Facereader instellingen, stel Data Export in. Stel hierbij ten minste de volgende opties in voor export:
+- Action Units
+- Facial states
+- Heart rate and heart rate variability
+
+
+### eSense
 Voor eSense data: Open de eSense app en schakel ‘hidden mode’ in door 4 keer rechtsonder op ‘Mindfield Biosystems’ te tikken. Stel dan bij eSense Skin Response OSC transfer in.
 - IP address: IP adres van de PC waar BioCall-User op draait
 - Port: 4559
